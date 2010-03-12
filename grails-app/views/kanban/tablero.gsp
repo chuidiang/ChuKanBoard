@@ -17,12 +17,13 @@
           <div style="float:left; width:200px; padding:10px; border-right:solid 1px; height:100%;">
              <g:if test="${(j<(listaColumnas.size()-1))}">
                 <tooltip:tip value="Crear nueva columna">
-                <g:link style="float:right; clear:right;" action="nuevaColumna" id="${columna.id}"><image src="${resource(dir:'images',file:'page_extension.gif')}"/></g:link>
+                <g:link style="float:right; clear:right;" controller="columna" action="nuevaColumna" id="${columna.id}"><image src="${resource(dir:'images',file:'page_extension.gif')}"/></g:link>
                 </tooltip:tip>
              </g:if>
              <g:if test="${columna.borrable && (listaTodasLasTareas[j].size()==0)}">
                 <tooltip:tip value="Borrar la columna">
-                <g:link style="float:left;" 
+                <g:link style="float:left;"
+                        controller="columna"  
                         action="borraColumna" 
                         id="${columna.id}" onclick="return confirm('Mira que lo borramos...')">
                    <image src="${resource(dir:'images',file:'action_stop.gif')}"/>
@@ -31,7 +32,7 @@
              </g:if>
              <h2 style="text-align:center; border-bottom:solid 1px;">
                 <g:if test="${columna.titulo.equals('')}">
-                   <g:form style="margin-bottom:0px; padding-bottom:0px;" method="post" action="cambiaTituloColumna">
+                   <g:form style="margin-bottom:0px; padding-bottom:0px;" method="post" controller="columna" action="cambiaTituloColumna">
                       <g:hiddenField name="idColumna" value="${columna.id}"/>
                       <g:textField name="nuevoTituloColumna" value="${columna?.titulo}"/>
                    </g:form>
