@@ -6,30 +6,32 @@
         <g:set var="entityName" value="${message(code: 'tarea.label', default: 'Tarea')}" />
         <title><g:message code="default.list.label" args="[entityName]" /></title>
     </head>
-    <body style="font-family:Arial,Helvetica,sans-serif; font-size:small;">
+    <body style="font-family:Arial,Helvetica,sans-serif; font-size:small; min-width:${listaColumnas.size()*230};">
        <p style="float:right"><a href="http://www.chuidiang.com">http://www.chuidiang.com</a></p>
        <h1>ChuKanBoard</h1>
        <g:if test="${flash.message}">
-          <div class="message">${flash.message}</div>
+       <div style="color:#ff0000;">${flash.message}</div>
        </g:if>
           <!-- para cada columna -->
           <g:each in="${listaColumnas}" status="j" var="columna">
           <div style="float:left; width:200px; padding:10px; border-right:solid 1px; height:100%;">
-             <g:if test="${columna.borrable}">
-                <g:link style="float:right;" 
+             <g:if test="${(j<(listaColumnas.size()-1))}">
+                <tooltip:tip value="Crear nueva columna">
+                <g:link style="float:right; clear:right;" action="nuevaColumna" id="${columna.id}"><image src="${resource(dir:'images',file:'page_extension.gif')}"/></g:link>
+                </tooltip:tip>
+             </g:if>
+             <g:if test="${columna.borrable && (listaTodasLasTareas[j].size()==0)}">
+                <tooltip:tip value="Borrar la columna">
+                <g:link style="float:left;" 
                         action="borraColumna" 
                         id="${columna.id}" onclick="return confirm('Mira que lo borramos...')">
                    <image src="${resource(dir:'images',file:'action_stop.gif')}"/>
-                </g:link>             
-             </g:if>
-             <g:if test="${(j<(listaColumnas.size()-1))}">
-                <gui:toolTip text="Crear nueva columna">
-                <g:link style="float:right; clear:right;" action="nuevaColumna" id="${columna.id}"><image src="${resource(dir:'images',file:'page_extension.gif')}"/></g:link>
-                </gui:toolTip>
+                </g:link>
+                </tooltip:tip>             
              </g:if>
              <h2 style="text-align:center; border-bottom:solid 1px;">
                 <g:if test="${columna.titulo.equals('')}">
-                   <g:form method="post" action="cambiaTituloColumna">
+                   <g:form style="margin-bottom:0px; padding-bottom:0px;" method="post" action="cambiaTituloColumna">
                       <g:hiddenField name="idColumna" value="${columna.id}"/>
                       <g:textField name="nuevoTituloColumna" value="${columna?.titulo}"/>
                    </g:form>
@@ -62,7 +64,7 @@
                    </div></br>
              </g:each>
              <g:if test="${columna.numeroColumna==0}">
-                <div style="background-color:#ccffff; padding:10px;">
+                <div style="background-color:#ffffcc; padding:10px;">
                    <g:form method="post" >
                        <label for="descripcion">Descripci&oacute;n</label>
                        <g:textArea name="descripcion" value="${tareaInstance?.descripcion}" rows="5"  />
