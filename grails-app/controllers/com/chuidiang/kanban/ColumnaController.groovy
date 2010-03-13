@@ -3,17 +3,21 @@ package com.chuidiang.kanban
 class ColumnaController {
 
     def nuevaColumna = {
-       def columnas = Columna.list(sort:"numeroColumna", order:"asc")
+       def tablero = Tablero.get(session.tablero)
+       def columnas = tablero.columnas
        def incrementarNumeroColumna=false
        def columnaReferencia = Columna.get(params.id)
+       def Columna nuevaColumna
        
-       columnas.each ( { columna ->
+       Iterator iterador = columnas.iterator()
+       while (iterador.hasNext()) {
+          def columna = iterador.next()
           if (columna.id.equals(columnaReferencia.id)) {
-             Columna nuevaColumna= new Columna()
+             nuevaColumna= new Columna()
              nuevaColumna.titulo=""
              nuevaColumna.numeroColumna=columna.numeroColumna+1
              nuevaColumna.borrable=true
-             nuevaColumna.save(flush:true)
+                
              incrementarNumeroColumna=true
           } else {
              if (incrementarNumeroColumna==true) {
@@ -21,18 +25,22 @@ class ColumnaController {
                 columna.save(flush:true)
              }
           }
-       })
+       }
+       tablero.addToColumnas(nuevaColumna)
+       tablero.save()
+       
        redirect(controller:"kanban", action: "tablero")
     }
     
     def borraColumna = {
-       def columnas = Columna.list(sort:"numeroColumna", order:"asc")
+       def tablero = Tablero.get(session.tablero)
+       def columnas = tablero.columnas
        def decrementarNumeroColumna=false
        def columnaABorrar = Columna.get(params.id)
        
        columnas.each ( { columna ->
           if (columna.id.equals(columnaABorrar.id)) {
-             columna.delete()
+             
              decrementarNumeroColumna=true
           } else {
              if (decrementarNumeroColumna==true) {
@@ -41,6 +49,10 @@ class ColumnaController {
              }
           }
        })
+       
+       tablero.removeFromColumnas(columnaABorrar)
+       columnaABorrar.delete()
+       tablero.save()
        redirect(controller:"kanban", action: "tablero")
     }
     
