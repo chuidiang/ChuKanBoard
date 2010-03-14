@@ -5,7 +5,7 @@ class KanbanController {
 	
 	def tablero = {
 		log.info ("params.id="+params.id)
-		log.info ("session.id="+ session.id)
+		log.info ("session.tablero="+ session.tablero)
 		Tablero tablero
 		if (params.id != null) {
 			tablero = Tablero.get(params.id)
@@ -19,8 +19,8 @@ class KanbanController {
 			return;
 		}
 		
-		def columnas = tablero.columnas
-		
+		def columnas = Columna.findAllByIdTablero(tablero.id,[sort:"numeroColumna", order:"asc"])
+		log.info "columnas="+columnas.size()
 		// Se crean dos columnas por defecto si no hay ninguna
 		// La de pila de tareas y la de tareas hechas
 		if (columnas.size()==0){
@@ -29,20 +29,22 @@ class KanbanController {
 			columnaInicial.numeroColumna=0
 			columnaInicial.titulo="PILA"
 			columnaInicial.borrable=false
-			tablero.addToColumnas(columnaInicial)
+			columnaInicial.idTablero = tablero.id
+			columnaInicial.save(flush:true)
+			columnas.add(columnaInicial)
 			
 			Columna columnaFinal=new Columna()
 			columnaFinal.numeroColumna=1
 			columnaFinal.titulo="HECHO"
 			columnaFinal.borrable=false
-			tablero.addToColumnas(columnaFinal)
-			
-			tablero.save(flush:true)
+			columnaFinal.idTablero = tablero.id
+			columnaFinal.save(flush:true)
+			columnas.add(columnaFinal)
 		}
 		
 		def todasLasTareas = []
 		columnas.each ({ columna ->
-			def tareas = Tarea.findAllByEstadoAndTablero(columna.numeroColumna,tablero)
+			def tareas = Tarea.findAllByEstadoAndIdTablero(columna.numeroColumna,tablero.id)
 			todasLasTareas.add(tareas)
 		})
 		[listaColumnas:columnas, listaTodasLasTareas:todasLasTareas]
@@ -52,10 +54,8 @@ class KanbanController {
 		def tareaInstance = new Tarea(params)
 		tareaInstance.estado=0;
 		tareaInstance.fechaModificacion=new Date()
-		
-		def elTableroActual = Tablero.get(session.tablero)
-		elTableroActual.addToTareas(tareaInstance)
-		elTableroActual.save()
+		tareaInstance.idTablero = session.tablero
+		tareaInstance.save(flush:true)
 		
 		redirect(action: "tablero")
 	}
@@ -66,7 +66,7 @@ class KanbanController {
 			tablero = Tablero.get(session.tablero)
 			tareaInstance.estado+=1
 			tareaInstance.fechaModificacion=new Date()
-			tareaInstance.save()
+			tareaInstance.save(flush:true)
 		}
 		redirect(action: "tablero")
 	}
@@ -76,17 +76,14 @@ class KanbanController {
 		if (tareaInstance) {
 			tareaInstance.estado-=1
 			tareaInstance.fechaModificacion=new Date()
-			tareaInstance.save()
+			tareaInstance.save(flush:true)
 		}
 		redirect(action: "tablero")
 	}
 	
 	def borra = {
 		def tareaInstance = Tarea.get(params.id)
-		def tablero = tareaInstance.tablero
-		tablero.removeFromTareas(tareaInstance)
 		tareaInstance.delete(flush:true)
-		tablero.save()
 		
 		redirect(action: "tablero")
 	}    

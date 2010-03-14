@@ -103,7 +103,7 @@
                 <div style="background-color:#ffffcc; padding:10px;">
                    <g:form method="post" >
                        <label for="descripcion">Descripci&oacute;n</label>
-                       <g:textArea name="descripcion" value="${tareaInstance?.descripcion}" rows="5"  />
+                       <g:textArea name="descripcion" value="${tareaInstance?.descripcion}" rows="5" wrap="hard" />
                       <g:actionSubmit value="Crear" action="save" />
                    </g:form>
                 </div>

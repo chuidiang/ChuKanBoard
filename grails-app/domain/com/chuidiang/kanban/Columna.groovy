@@ -5,8 +5,7 @@ class Columna implements Comparable {
 	int maximoTareas
 	int numeroColumna
 	boolean borrable
-	
-	static belongsTo = [tablero:Tablero]
+	int idTablero
 	
 	int compareTo(obj) {
 		numeroColumna.compareTo(obj.numeroColumna)

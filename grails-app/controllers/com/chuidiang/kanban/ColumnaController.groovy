@@ -5,47 +5,46 @@ class ColumnaController {
 		params.max = Math.min(params.max ? params.int('max') : 10, 100)
 		[columnaInstanceList: Columna.list(params), columnaInstanceTotal: Columna.count()]
 	}
+	
 	def nuevaColumna = {
 		def tablero = Tablero.get(session.tablero)
-		def columnas = tablero.columnas
+		def columnas = Columna.findAllByIdTablero(tablero.id, [sort:"numeroColumna", order:"asc"])
 		def incrementarNumeroColumna=false
 		def columnaReferencia = Columna.get(params.id)
 		def Columna nuevaColumna
 		
 		// Se desplazan las columnas posteriores
-		Iterator iterador = columnas.iterator()
-		while (iterador.hasNext()) {
-			def columna = iterador.next()
+		columnas.each { columna ->
 			if (columna.id.equals(columnaReferencia.id)) {
 				nuevaColumna= new Columna()
 				nuevaColumna.titulo=""
 				nuevaColumna.numeroColumna=columna.numeroColumna+1
 				nuevaColumna.borrable=true
+				nuevaColumna.idTablero = tablero.id
+				nuevaColumna.save(flush:true)
 				
 				incrementarNumeroColumna=true
 			} else {
 				if (incrementarNumeroColumna==true) {
 					columna.numeroColumna++
+					columna.save(flush:true)
 				}
 			}
 		}
 		
 		// Se desplazan las tareas junto con sus columnas
-		def tareasAMover = Tarea.findAllByTableroAndEstadoGreaterThan(tablero, columnaReferencia.numeroColumna)
+		def tareasAMover = Tarea.findAllByIdTableroAndEstadoGreaterThan(tablero.id, columnaReferencia.numeroColumna)
 		tareasAMover.each ( { tarea ->
 			tarea.estado++
-			tarea.save()
+			tarea.save(flush:true)
 		})
-		
-		tablero.addToColumnas(nuevaColumna)
-		tablero.save()
 		
 		redirect(controller:"kanban", action: "tablero")
 	}
 	
 	def borraColumna = {
 		def tablero = Tablero.get(session.tablero)
-		def columnas = tablero.columnas
+		def columnas = Columna.findAllByIdTablero(tablero.id, [sort:"numeroColumna", order:"asc"])
 		def decrementarNumeroColumna=false
 		def columnaABorrar = Columna.get(params.id)
 		
@@ -55,20 +54,18 @@ class ColumnaController {
 			} else {
 				if (decrementarNumeroColumna==true) {
 					columna.numeroColumna--
-					columna.save()
+					columna.save(flush:true)
 				}
 			}
 		})
 		
-		def tareasAMover = Tarea.findAllByTableroAndEstadoGreaterThan(tablero, columnaABorrar.numeroColumna)
+		def tareasAMover = Tarea.findAllByIdTableroAndEstadoGreaterThan(tablero.id, columnaABorrar.numeroColumna)
 		tareasAMover.each ( { tarea ->
 			tarea.estado--
-			tarea.save()
+			tarea.save(flush:true)
 		})
 		
-		tablero.removeFromColumnas(columnaABorrar)
 		columnaABorrar.delete(flush:true)
-		tablero.save()
 		
 		redirect(controller:"kanban", action: "tablero")
 	}
@@ -79,7 +76,7 @@ class ColumnaController {
 			flash.message="${params}"
 		}else{
 			columna.titulo=params.nuevoTituloColumna
-			columna.save()
+			columna.save(flush:true)
 		}
 		redirect(controller:"kanban", action:"tablero")
 	}

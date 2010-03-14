@@ -6,8 +6,7 @@ class Tarea {
 	Date fechaComienzo;
 	Date fechaModificacion=new Date();
 	int estado;
-	
-	static belongsTo = [tablero:Tablero]
+	int idTablero
 	
 	static constraints = {
 		personaAsignada(nullable:true)
