@@ -7,9 +7,10 @@
         <title>ChuKanBoard</title>
         <link rel="stylesheet" type="text/css" href="/ChuKanBoard/css/main.css" />
     </head>
-    <body style="min-width:${listaColumnas.size()*230};">
+    <body style="margin:0px; border:0px;">
+    <div style="width:${listaColumnas.size()*222}px; margin:auto; padding:0px; ">
        <% def tablero = com.chuidiang.kanban.Tablero.get(session.tablero) %>
-       <p style="float:right"><a href="http://www.chuidiang.com">http://www.chuidiang.com</a></p>
+       <a style="float:right" href="http://www.chuidiang.com">http://www.chuidiang.com</a>
        <p><a href="${resource()}">Listado de tableros</a></p>
        <h1>${tablero.nombre}</h1>
        
@@ -20,8 +21,8 @@
        
           <!-- para cada columna -->
           <g:each in="${listaColumnas}" status="j" var="columna">
-          <div style="float:left; width:200px; padding:10px; border-right:solid 1px; height:100%;">
-          
+          <div class="columna">
+          <div>
              <!-- boton de crear nueva columna -->
              <g:if test="${(j<(listaColumnas.size()-1))}">
                 <tooltip:tip value="Crear nueva columna">
@@ -30,7 +31,6 @@
                 </g:link>
                 </tooltip:tip>
              </g:if>
-             
              <!-- boton de borrar columna -->
              <g:if test="${columna.borrable && (listaTodasLasTareas[j].size()==0)}">
                 <tooltip:tip value="Borrar la columna">
@@ -42,9 +42,9 @@
                 </g:link>
                 </tooltip:tip>             
              </g:if>
-             
+             </div>
              <!-- titulo de la columna -->
-             <h2 style="text-align:center; border-bottom:solid 1px;">
+             <h2>
                 <g:if test="${columna.titulo.equals('')}">
                    <g:form style="margin-bottom:0px; padding-bottom:0px;" method="post" controller="columna" action="cambiaTituloColumna">
                       <g:hiddenField name="idColumna" value="${columna.id}"/>
@@ -63,7 +63,8 @@
              <g:each in="${listaTareasColumna[j]}" var="tareaInstance">
              
                    <!-- la tarea -->
-                   <div style="background-color:#ffffcc; padding:10px; position:relative;">
+                   <div class="postit">
+                   <div>
                       
                       <!-- boton de borrar si esta en la primera columna -->
                       <g:if test="${(columna.numeroColumna==0)}">
@@ -76,8 +77,10 @@
                       </g:if>
                       
                       <!-- el texto de la tarea -->
-                      ${tareaInstance.descripcion}</br>
-                      
+                      ${tareaInstance.descripcion}</br></br>
+                   </div>
+                   
+                   <div>
                       <!-- boton de ir a la izquierda -->
                       <g:if test="${columna.numeroColumna>0}">
                          <g:link action="regresa" id="${tareaInstance.id}">
@@ -92,15 +95,14 @@
                       <g:link style="position:absolute; right:10px;" action="progresa" id="${tareaInstance.id}">
                          <image src="${resource(dir:'images',file:'action_forward.gif')}" style="border-style: none"/>
                       </g:link>
-                      
                    </div>
-                   
+                   </div>
                    </br>
              </g:each>
              
              <!-- caja de texto para crear nueva tarea -->
              <g:if test="${columna.numeroColumna==0}">
-                <div style="background-color:#ffffcc; padding:10px;">
+                <div class="postit" >
                    <g:form method="post" >
                        <label for="descripcion">Descripci&oacute;n</label>
                        <g:textArea name="descripcion" value="${tareaInstance?.descripcion}" rows="5" wrap="hard" />
@@ -111,5 +113,6 @@
              
           </div>
        </g:each>
+       </div>
     </body>
 </html>
