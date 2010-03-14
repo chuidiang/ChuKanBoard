@@ -1,7 +1,10 @@
 package com.chuidiang.kanban
 
 class ColumnaController {
-	
+	def list = {
+		params.max = Math.min(params.max ? params.int('max') : 10, 100)
+		[columnaInstanceList: Columna.list(params), columnaInstanceTotal: Columna.count()]
+	}
 	def nuevaColumna = {
 		def tablero = Tablero.get(session.tablero)
 		def columnas = tablero.columnas
@@ -23,7 +26,6 @@ class ColumnaController {
 			} else {
 				if (incrementarNumeroColumna==true) {
 					columna.numeroColumna++
-					columna.save(flush:true)
 				}
 			}
 		}
@@ -49,7 +51,6 @@ class ColumnaController {
 		
 		columnas.each ( { columna ->
 			if (columna.id.equals(columnaABorrar.id)) {
-				
 				decrementarNumeroColumna=true
 			} else {
 				if (decrementarNumeroColumna==true) {
@@ -64,9 +65,11 @@ class ColumnaController {
 			tarea.estado--
 			tarea.save()
 		})
+		
 		tablero.removeFromColumnas(columnaABorrar)
-		columnaABorrar.delete()
+		columnaABorrar.delete(flush:true)
 		tablero.save()
+		
 		redirect(controller:"kanban", action: "tablero")
 	}
 	

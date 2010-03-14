@@ -47,8 +47,9 @@ input, select, textarea {
 select {
    padding: 2px 2px 2px 0;
 }
+
 textarea {
-	width: 250px;
+	width: 150px;
 	height: 150px;
 	vertical-align: top;
 }

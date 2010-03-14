@@ -30,14 +30,12 @@ class KanbanController {
 			columnaInicial.titulo="PILA"
 			columnaInicial.borrable=false
 			tablero.addToColumnas(columnaInicial)
-			columnas.add(columnaInicial)
 			
 			Columna columnaFinal=new Columna()
 			columnaFinal.numeroColumna=1
 			columnaFinal.titulo="HECHO"
 			columnaFinal.borrable=false
 			tablero.addToColumnas(columnaFinal)
-			columnas.add(columnaFinal)
 			
 			tablero.save(flush:true)
 		}
@@ -57,7 +55,7 @@ class KanbanController {
 		
 		def elTableroActual = Tablero.get(session.tablero)
 		elTableroActual.addToTareas(tareaInstance)
-		elTableroActual.save(flush:true)
+		elTableroActual.save()
 		
 		redirect(action: "tablero")
 	}
@@ -85,9 +83,11 @@ class KanbanController {
 	
 	def borra = {
 		def tareaInstance = Tarea.get(params.id)
-		def tablero = Tablero.get(session.tablero)
-		tablero.deleteFromTareas(tareaInstance)
-		tablero.delete(flush:true)
+		def tablero = tareaInstance.tablero
+		tablero.removeFromTareas(tareaInstance)
+		tareaInstance.delete(flush:true)
+		tablero.save()
+		
 		redirect(action: "tablero")
 	}    
 }

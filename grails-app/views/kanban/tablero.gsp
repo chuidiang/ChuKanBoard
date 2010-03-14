@@ -4,12 +4,13 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
         <tooltip:resources/>
         <g:set var="entityName" value="${message(code: 'tarea.label', default: 'Tarea')}" />
-        <title><g:message code="default.list.label" args="[entityName]" /></title>
+        <title>ChuKanBoard</title>
+        <link rel="stylesheet" type="text/css" href="/ChuKanBoard/css/main.css" />
     </head>
-    <body style="font-family:Arial,Helvetica,sans-serif; font-size:small; min-width:${listaColumnas.size()*230};">
+    <body style="min-width:${listaColumnas.size()*230};">
+       <% def tablero = com.chuidiang.kanban.Tablero.get(session.tablero) %>
        <p style="float:right"><a href="http://www.chuidiang.com">http://www.chuidiang.com</a></p>
        <p><a href="${resource()}">Listado de tableros</a></p>
-       <% def tablero = com.chuidiang.kanban.Tablero.get(session.tablero) %>
        <h1>${tablero.nombre}</h1>
        
        <!-- posible mensaje de error -->
@@ -51,7 +52,9 @@
                    </g:form>
                 </g:if>
                 <g:else>
+                   <g:link controller="columna" action="cambiaTituloColumna" params="[idColumna:columna.id,nuevoTituloColumna:'']">
                    ${columna.titulo}
+                   </g:link>
                 </g:else>
              </h2>
              

@@ -9,9 +9,9 @@ class Tarea {
 	
 	static belongsTo = [tablero:Tablero]
 	
-    static constraints = {
-       personaAsignada(nullable:true)
-       fechaComienzo(nullable:true)
-       descripcion(blank:false)
-    }
+	static constraints = {
+		personaAsignada(nullable:true)
+		fechaComienzo(nullable:true)
+		descripcion(blank:false)
+	}
 }
