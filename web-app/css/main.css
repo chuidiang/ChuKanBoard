@@ -8,14 +8,21 @@ h1 {
    background-color:#dddddd;
    color:black;
    border-top:solid 1px #ffffff;
-   border-bottom:solid 1px #aaaa;
+   border-bottom:solid 1px #aaaaaa;
    border-left:solid 1px #ffffff;
-   border-right:solid 1px #aaaa;
+   border-right:solid 1px #aaaaaa;
+   padding:10px;
 }
 
 h2 {
 	text-align:center; 
 	border-bottom:solid 1px #aaaaaa;
+}
+
+li {
+	margin-top: 50px;
+	margin-left: 50px;
+	font-size: 20px;
 }
 
 body {
