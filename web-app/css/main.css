@@ -12,11 +12,13 @@ h1 {
    border-left:solid 1px #ffffff;
    border-right:solid 1px #aaaaaa;
    padding:10px;
+   font-size:24px;
 }
 
 h2 {
 	text-align:center; 
 	border-bottom:solid 1px #aaaaaa;
+	font-size:20px;
 }
 
 li {
@@ -37,14 +39,16 @@ body {
    position:relative;
    border-right:solid 2px black;
    border-bottom:solid 2px black;
+   margin-left:5px;
+   margin-right:5px;
 }
 
 .columna {
    float:left; 
-   width:200px; 
-   padding:10px; 
+   width:220px; 
+   padding:0px; 
    border-right:solid 1px #aaaaaa; 
    border-left:solid 1px #ffffff; 
-   height:100%; 
+   height:1000px;
    background-color:#dddddd;
 }

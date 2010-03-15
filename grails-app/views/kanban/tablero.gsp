@@ -6,9 +6,20 @@
         <g:set var="entityName" value="${message(code: 'tarea.label', default: 'Tarea')}" />
         <title>ChuKanBoard</title>
         <link rel="stylesheet" type="text/css" href="/ChuKanBoard/css/main.css" />
+        <script type="text/javascript">
+            function permuta(id1, id2) {
+               if (document.getElementById(id1).style.visibility=='hidden') {
+                  document.getElementById(id1).style.visibility='visible';
+                  document.getElementById(id2).style.visibility='hidden';
+               } else {
+                  document.getElementById(id2).style.visibility='visible';
+                  document.getElementById(id1).style.visibility='hidden';
+               }
+            }
+        </script>
     </head>
-    <body style="margin:0px; border:0px;">
-    <div style="width:${listaColumnas.size()*222}px; margin:auto; padding:0px; ">
+    <body style="margin:0px; border:0px; text-align:center;">
+    <div style="width:${listaColumnas.size()*222}px; margin:auto; padding:0px; text-align:left;">
        <% def tablero = com.chuidiang.kanban.Tablero.get(session.tablero) %>
        <a style="float:right" href="http://www.chuidiang.com">http://www.chuidiang.com</a>
        <p><a href="${resource()}">Listado de tableros</a></p>
@@ -44,19 +55,24 @@
              </g:if>
              </div>
              <!-- titulo de la columna -->
-             <h2>
-                <g:if test="${columna.titulo.equals('')}">
-                   <g:form style="margin-bottom:0px; padding-bottom:0px;" method="post" controller="columna" action="cambiaTituloColumna">
+             <%  def visibilidad_titulo='visible'
+                 def visibilidad_editor='hidden' 
+             if (''.equals(columna.titulo)) {
+                 visibilidad_titulo='hidden'
+                 visibilidad_editor='visible'
+             }
+             %>
+             <div style="height:50px;">
+                   <g:form id="editor_titulo_columna_${columna.id}" 
+                      style="margin-bottom:0px; padding-bottom:0px; position:absolute; visibility:${visibilidad_editor}; border-bottom:solid 1px #aaaaaa;" 
+                      method="post" url="[controller:'columna',action:'cambiaTituloColumna']">
                       <g:hiddenField name="idColumna" value="${columna.id}"/>
                       <g:textField name="nuevoTituloColumna" value="${columna?.titulo}"/>
                    </g:form>
-                </g:if>
-                <g:else>
-                   <g:link controller="columna" action="cambiaTituloColumna" params="[idColumna:columna.id,nuevoTituloColumna:'']">
+             <h2 style="visibility:${visibilidad_titulo}" id="titulo_columna_${columna.id}" onclick="permuta('editor_titulo_columna_${columna.id}','titulo_columna_${columna.id}')">
                    ${columna.titulo}
-                   </g:link>
-                </g:else>
              </h2>
+             </div>
              
              <!-- lista de tareas -->
              <g:set value="${listaTodasLasTareas}" var="listaTareasColumna"/>
@@ -77,7 +93,9 @@
                       </g:if>
                       
                       <!-- el texto de la tarea -->
+                      <div>
                       ${tareaInstance.descripcion}</br></br>
+                      </div>
                    </div>
                    
                    <div>
@@ -105,7 +123,7 @@
                 <div class="postit" >
                    <g:form method="post" >
                        <label for="descripcion">Descripci&oacute;n</label>
-                       <g:textArea name="descripcion" value="${tareaInstance?.descripcion}" rows="5" wrap="hard" />
+                       <g:textArea name="descripcion" value="${tareaInstance?.descripcion}" rows="5" />
                       <g:actionSubmit value="Crear" action="save" />
                    </g:form>
                 </div>
