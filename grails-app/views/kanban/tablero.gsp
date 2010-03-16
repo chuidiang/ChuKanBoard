@@ -10,10 +10,14 @@
             function permuta(id1, id2) {
                if (document.getElementById(id1).style.visibility=='hidden') {
                   document.getElementById(id1).style.visibility='visible';
+                  document.getElementById(id1).style.display='block';
                   document.getElementById(id2).style.visibility='hidden';
+                  document.getElementById(id2).style.display='none';
                } else {
                   document.getElementById(id2).style.visibility='visible';
+                  document.getElementById(id2).style.visibility='block';
                   document.getElementById(id1).style.visibility='hidden';
+                  document.getElementById(id2).style.visibility='none';
                }
             }
         </script>
@@ -56,20 +60,29 @@
              </div>
              <!-- titulo de la columna -->
              <%  def visibilidad_titulo='visible'
+                 def display_titulo='block'
                  def visibilidad_editor='hidden' 
+                 def display_editor='none'
              if (''.equals(columna.titulo)) {
                  visibilidad_titulo='hidden'
+                 display_titulo='none'
                  visibilidad_editor='visible'
+                 display_editor='block'
              }
              %>
-             <div style="height:50px;">
-                   <g:form id="editor_titulo_columna_${columna.id}" 
-                      style="margin-bottom:0px; padding-bottom:0px; position:absolute; visibility:${visibilidad_editor}; border-bottom:solid 1px #aaaaaa;" 
+             <div>
+                <div id="editor_titulo_columna_${columna.id}" 
+                   style="text-align:center; visibility:${visibilidad_editor}; display:${display_editor};">
+                   <g:form  
+                      style="margin-top:20px; border-bottom:solid 1px #aaaaaa;" 
                       method="post" url="[controller:'columna',action:'cambiaTituloColumna']">
                       <g:hiddenField name="idColumna" value="${columna.id}"/>
                       <g:textField name="nuevoTituloColumna" value="${columna?.titulo}"/>
                    </g:form>
-             <h2 style="visibility:${visibilidad_titulo}" id="titulo_columna_${columna.id}" onclick="permuta('editor_titulo_columna_${columna.id}','titulo_columna_${columna.id}')">
+                 </div>
+             <h2 style="margin-top:20px; visibility:${visibilidad_titulo}; display:${display_titulo}; clear:none;" 
+                 id="titulo_columna_${columna.id}" 
+                 onclick="permuta('editor_titulo_columna_${columna.id}','titulo_columna_${columna.id}')">
                    ${columna.titulo}
              </h2>
              </div>
@@ -95,7 +108,19 @@
                       
                       <!-- el texto de la tarea -->
                       <div>
-                      ${tareaInstance.descripcion}</br></br>
+                         <g:form method="post" 
+                            name="editor_comentario${tareaInstance.id}" 
+                            controller="tarea"
+                            style="visibility:hidden; display:none;">
+                             <label for="descripcion">Descripci&oacute;n</label>
+                             <g:textArea name="descripcion" value="${tareaInstance?.descripcion}" rows="5" />
+                             <g:hiddenField name="idTarea" value="${tareaInstance.id}"/>
+                             <g:actionSubmit value="Guardar" action="modifica"/>
+                         </g:form>
+                         <div id="comentario${tareaInstance.id}" 
+                            onclick="permuta('editor_comentario${tareaInstance.id}','comentario${tareaInstance.id}')">
+                            ${tareaInstance.descripcion}</br></br>
+                         </div>
                       </div>
                    </div>
                    

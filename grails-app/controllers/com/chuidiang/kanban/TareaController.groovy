@@ -39,4 +39,11 @@ class TareaController {
 		redirect(controller:"kanban",action: "tablero")
 	}    
 	
+	def modifica = {
+		Tarea tareaInstance=Tarea.get(params.idTarea)
+		tareaInstance.descripcion=params.descripcion
+		tareaInstance.save(flush:true)
+		
+		redirect(controller:"kanban",action:"tablero")
+	}
 }
