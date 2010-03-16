@@ -1,6 +1,9 @@
 package com.chuidiang.kanban
 
 class KanbanController {  
+	
+	static allowedMethods = [tablero:['POST','GET']];
+	
 	def defaultAction="tablero"
 	
 	def tablero = {
@@ -50,41 +53,5 @@ class KanbanController {
 		[listaColumnas:columnas, listaTodasLasTareas:todasLasTareas]
 	}
 	
-	def save = {
-		def tareaInstance = new Tarea(params)
-		tareaInstance.estado=0;
-		tareaInstance.fechaModificacion=new Date()
-		tareaInstance.idTablero = session.tablero
-		tareaInstance.save(flush:true)
-		
-		redirect(action: "tablero")
-	}
 	
-	def progresa = {
-		def tareaInstance = Tarea.get(params.id)
-		if (tareaInstance) {
-			tablero = Tablero.get(session.tablero)
-			tareaInstance.estado+=1
-			tareaInstance.fechaModificacion=new Date()
-			tareaInstance.save(flush:true)
-		}
-		redirect(action: "tablero")
-	}
-	
-	def regresa = {
-		def tareaInstance = Tarea.get(params.id)
-		if (tareaInstance) {
-			tareaInstance.estado-=1
-			tareaInstance.fechaModificacion=new Date()
-			tareaInstance.save(flush:true)
-		}
-		redirect(action: "tablero")
-	}
-	
-	def borra = {
-		def tareaInstance = Tarea.get(params.id)
-		tareaInstance.delete(flush:true)
-		
-		redirect(action: "tablero")
-	}    
 }

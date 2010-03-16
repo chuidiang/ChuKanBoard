@@ -85,6 +85,7 @@
                       <!-- boton de borrar si esta en la primera columna -->
                       <g:if test="${(columna.numeroColumna==0)}">
                          <g:link style="position:absolute; right:10px;" 
+                                 controller="tarea"
                                  action="borra" 
                                  id="${tareaInstance.id}" 
                                  onclick="return confirm('Mira que lo borramos...')">
@@ -101,7 +102,7 @@
                    <div>
                       <!-- boton de ir a la izquierda -->
                       <g:if test="${columna.numeroColumna>0}">
-                         <g:link action="regresa" id="${tareaInstance.id}">
+                         <g:link controller="tarea" action="regresa" id="${tareaInstance.id}">
                             <image src="${resource(dir:'images',file:'action_back.gif')}" style="border-style: none"/>
                          </g:link>
                       </g:if>
@@ -110,7 +111,7 @@
                       </g:else>
                       
                       <!-- boton de ir a la derecha -->
-                      <g:link style="position:absolute; right:10px;" action="progresa" id="${tareaInstance.id}">
+                      <g:link style="position:absolute; right:10px;" controller="tarea" action="progresa" id="${tareaInstance.id}">
                          <image src="${resource(dir:'images',file:'action_forward.gif')}" style="border-style: none"/>
                       </g:link>
                    </div>
@@ -121,10 +122,10 @@
              <!-- caja de texto para crear nueva tarea -->
              <g:if test="${columna.numeroColumna==0}">
                 <div class="postit" >
-                   <g:form method="post" >
+                   <g:form method="post" controller="tarea" >
                        <label for="descripcion">Descripci&oacute;n</label>
                        <g:textArea name="descripcion" value="${tareaInstance?.descripcion}" rows="5" />
-                      <g:actionSubmit value="Crear" action="save" />
+                      <g:actionSubmit value="Crear"  action="save" />
                    </g:form>
                 </div>
              </g:if>
