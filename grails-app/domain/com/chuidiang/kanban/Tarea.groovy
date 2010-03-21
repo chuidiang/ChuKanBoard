@@ -4,7 +4,7 @@ class Tarea {
 	String descripcion;
 	String personaAsignada;
 	Date fechaComienzo;
-	Date fechaModificacion=new Date();
+	Date fechaFinalizacion;
 	int estado;
 	int idTablero
 	
@@ -12,5 +12,7 @@ class Tarea {
 		personaAsignada(nullable:true)
 		fechaComienzo(nullable:true)
 		descripcion(blank:false)
+		fechaFinalizacion(nullable:true)
+		fechaComienzo(nullable:true)
 	}
 }

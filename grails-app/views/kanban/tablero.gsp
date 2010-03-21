@@ -26,7 +26,7 @@
     <div style="width:${listaColumnas.size()*222}px; margin:auto; padding:0px; text-align:left;">
        <% def tablero = com.chuidiang.kanban.Tablero.get(session.tablero) %>
        <a style="float:right" href="http://www.chuidiang.com">http://www.chuidiang.com</a>
-       <p><a href="${resource()}">Listado de tableros</a></p>
+       <p><a href="${resource()}">Listado de tableros</a> <g:link controller="estadisticas" action="estadisticas">estad&iacute;sticas</g:link></p>
        <h1>${tablero.nombre}</h1>
        
        <!-- posible mensaje de error -->
@@ -157,6 +157,7 @@
              
           </div>
        </g:each>
+       <g:link controller="estadisticas" action="estadisticas">estadisticas</g:link>
        </div>
     </body>
 </html>

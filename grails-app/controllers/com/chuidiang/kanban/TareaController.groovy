@@ -5,7 +5,6 @@ class TareaController {
 	def save = {
 		def tareaInstance = new Tarea(params)
 		tareaInstance.estado=0;
-		tareaInstance.fechaModificacion=new Date()
 		tareaInstance.idTablero = session.tablero
 		tareaInstance.save(flush:true)
 		
@@ -15,8 +14,14 @@ class TareaController {
 	def progresa = {
 		def tareaInstance = Tarea.get(params.id)
 		if (tareaInstance) {
+			if (tareaInstance.estado==0) {
+				tareaInstance.fechaComienzo=new Date()
+			}
 			tareaInstance.estado+=1
-			tareaInstance.fechaModificacion=new Date()
+			int numeroColumnas = Columna.countByIdTablero(session.tablero)
+			if (tareaInstance.estado==(numeroColumnas-1)) {
+				tareaInstance.fechaFinalizacion=new Date()
+			}
 			tareaInstance.save(flush:true)
 		}
 		redirect(controller:"kanban",action: "tablero")
@@ -26,7 +31,13 @@ class TareaController {
 		def tareaInstance = Tarea.get(params.id)
 		if (tareaInstance) {
 			tareaInstance.estado-=1
-			tareaInstance.fechaModificacion=new Date()
+			if (tareaInstance.estado==0) {
+				tareaInstance.fechaComienzo=null
+			}
+			int numeroColumnas = Columna.countByIdTablero(session.tablero)
+			if (tareaInstance.estado <(numeroColumnas-1)){
+				tareaInstance.fechaFinalizacion=null
+			}
 			tareaInstance.save(flush:true)
 		}
 		redirect(controller:"kanban",action: "tablero")

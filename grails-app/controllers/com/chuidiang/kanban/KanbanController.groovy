@@ -7,8 +7,6 @@ class KanbanController {
 	def defaultAction="tablero"
 	
 	def tablero = {
-		log.info ("params.id="+params.id)
-		log.info ("session.tablero="+ session.tablero)
 		Tablero tablero
 		if (params.id != null) {
 			tablero = Tablero.get(params.id)
@@ -23,7 +21,6 @@ class KanbanController {
 		}
 		
 		def columnas = Columna.findAllByIdTablero(tablero.id,[sort:"numeroColumna", order:"asc"])
-		log.info "columnas="+columnas.size()
 		// Se crean dos columnas por defecto si no hay ninguna
 		// La de pila de tareas y la de tareas hechas
 		if (columnas.size()==0){
