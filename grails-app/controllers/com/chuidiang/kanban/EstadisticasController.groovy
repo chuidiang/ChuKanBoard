@@ -53,6 +53,9 @@ class EstadisticasController {
 			tareasAcabadas.add(totalTareasAcabadas)
 		}
 		
+		if (fechas.size()==0){
+			fechas.add( new Date())
+		}
 		def inicioYFin = [fechas[0],fechas[fechas.size()-1]]
 		def totalTareas = Tarea.countByIdTablero(session.tablero) 
 		[nombre:tablero.nombre, fechas:inicioYFin, total:totalTareas, empezadas:totalTareasEmpezadas, acabadas:totalTareasAcabadas]
