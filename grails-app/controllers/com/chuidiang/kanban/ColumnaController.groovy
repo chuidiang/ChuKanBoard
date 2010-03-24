@@ -3,7 +3,8 @@ package com.chuidiang.kanban
 class ColumnaController {
 	def list = {
 		params.max = Math.min(params.max ? params.int('max') : 10, 100)
-		[columnaInstanceList: Columna.list(params), columnaInstanceTotal: Columna.count()]
+		[columnaInstanceList: Columna.list(params),
+                    columnaInstanceTotal: Columna.count()]
 	}
 	
 	def nuevaColumna = {

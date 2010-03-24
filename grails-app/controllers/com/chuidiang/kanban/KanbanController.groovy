@@ -7,6 +7,7 @@ class KanbanController {
 	def defaultAction="tablero"
 	
 	def tablero = {
+		
 		Tablero tablero
 		if (params.id != null) {
 			tablero = Tablero.get(params.id)

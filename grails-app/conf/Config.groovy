@@ -1,6 +1,8 @@
 // locations to search for config files that get merged into the main config
 // config files can either be Java properties files or ConfigSlurper scripts
 
+grails.config.locations = ["file:grails-app/config/chukanboard.properties"]
+
 // grails.config.locations = [ "classpath:${appName}-config.properties",
 //                             "classpath:${appName}-config.groovy",
 //                             "file:${userHome}/.grails/${appName}-config.properties",
@@ -52,5 +54,6 @@ environments {
 
 // log4j configuration
 log4j = { debug "grails.app.controller" }
+
 
 
