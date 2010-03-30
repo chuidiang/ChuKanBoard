@@ -1,13 +1,13 @@
-var Ajax;
-if (Ajax && (Ajax != null)) {
-	Ajax.Responders.register({
-	  onCreate: function() {
-        if($('spinner') && Ajax.activeRequestCount>0)
-          Effect.Appear('spinner',{duration:0.5,queue:'end'});
-	  },
-	  onComplete: function() {
-        if($('spinner') && Ajax.activeRequestCount==0)
-          Effect.Fade('spinner',{duration:0.5,queue:'end'});
-	  }
-	});
+function permuta(id1, id2) {
+	if (document.getElementById(id1).style.visibility == 'hidden') {
+		document.getElementById(id1).style.visibility = 'visible';
+		document.getElementById(id1).style.display = 'block';
+		document.getElementById(id2).style.visibility = 'hidden';
+		document.getElementById(id2).style.display = 'none';
+	} else {
+		document.getElementById(id2).style.visibility = 'visible';
+		document.getElementById(id2).style.display = 'block';
+		document.getElementById(id1).style.visibility = 'hidden';
+		document.getElementById(id1).style.display = 'none';
+	}
 }
