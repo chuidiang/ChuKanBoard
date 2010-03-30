@@ -1,6 +1,6 @@
 <html>
     <head>
-    	<link rel="stylesheet" type="text/css" href="css/main.css" />
+    	<link rel="stylesheet" href="${resource(dir:'css',file:'main.css')}" />
         <title>ChuKanBan</title>
         <script type="text/javascript">
             function permuta(id1, id2) {

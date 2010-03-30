@@ -1,9 +1,7 @@
 package com.chuidiang.kanban;
 
-
-
-
 class EstadisticasController {
+
 	def defaultAction="estadisticas"
 	
 	def estadisticas= {

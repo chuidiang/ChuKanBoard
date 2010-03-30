@@ -1,6 +1,6 @@
 <html>
 	<head>
-	<link rel="stylesheet" type="text/css" href="/ChuKanBoard/css/main.css" />
+	<link rel="stylesheet" href="${resource(dir:'css',file:'main.css')}" />
 	</head>
 	<body>
 		<h1>Estadisticas de <a href="${resource()}/kanban/tablero">${nombre}<a></h1>

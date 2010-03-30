@@ -5,7 +5,7 @@
         <tooltip:resources/>
         <g:set var="entityName" value="${message(code: 'tarea.label', default: 'Tarea')}" />
         <title>ChuKanBoard</title>
-        <link rel="stylesheet" type="text/css" href="/ChuKanBoard/css/main.css" />
+        <link rel="stylesheet" href="${resource(dir:'css',file:'main.css')}" />
         <script type="text/javascript">
             function permuta(id1, id2) {
                if (document.getElementById(id1).style.visibility=='hidden') {

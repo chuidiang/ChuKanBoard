@@ -1,7 +1,11 @@
+import grails.util.GrailsUtil;
+
 dataSource {
+	
 	pooled = true
 	driverClassName = "org.hsqldb.jdbcDriver"
-	username = "sa"
+	username = "" +
+			"sa"
 	password = ""
 }
 
