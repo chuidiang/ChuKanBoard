@@ -1,11 +1,6 @@
 package com.chuidiang.kanban
 
 class ColumnaController {
-	def list = {
-		params.max = Math.min(params.max ? params.int('max') : 10, 100)
-		[columnaInstanceList: Columna.list(params),
-                    columnaInstanceTotal: Columna.count()]
-	}
 	
 	def nuevaColumna = {
 		def tablero = Tablero.get(session.tablero)
@@ -22,6 +17,7 @@ class ColumnaController {
 				nuevaColumna.numeroColumna=columna.numeroColumna+1
 				nuevaColumna.borrable=true
 				nuevaColumna.idTablero = tablero.id
+				nuevaColumna.maximoTareas=0
 				nuevaColumna.save(flush:true)
 				
 				incrementarNumeroColumna=true
@@ -77,6 +73,12 @@ class ColumnaController {
 			flash.message="${params}"
 		}else{
 			columna.titulo=params.nuevoTituloColumna
+			try {
+			columna.maximoTareas=Integer.parseInt(params.nuevoMaximoTareas)
+			} catch (Exception e) {
+				flash.message=params.nuevoMaximoTareas + " no es un entero"
+			}
+			
 			columna.save(flush:true)
 		}
 		redirect(controller:"kanban", action:"tablero")

@@ -31,6 +31,7 @@ class KanbanController {
 			columnaInicial.titulo="PILA"
 			columnaInicial.borrable=false
 			columnaInicial.idTablero = tablero.id
+			columnaInicial.maximoTareas=0
 			columnaInicial.save(flush:true)
 			columnas.add(columnaInicial)
 			
@@ -39,6 +40,7 @@ class KanbanController {
 			columnaFinal.titulo="HECHO"
 			columnaFinal.borrable=false
 			columnaFinal.idTablero = tablero.id
+			columnaFinal.maximoTareas=0
 			columnaFinal.save(flush:true)
 			columnas.add(columnaFinal)
 		}

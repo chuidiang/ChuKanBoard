@@ -64,22 +64,32 @@
                       style="margin-top:20px; border-bottom:solid 1px #aaaaaa;" 
                       method="post" url="[controller:'columna',action:'cambiaTituloColumna']">
                       <g:hiddenField name="idColumna" value="${columna.id}"/>
-                      <g:textField name="nuevoTituloColumna" value="${columna?.titulo}"/>
+                      <g:textField name="nuevoTituloColumna" value="${columna?.titulo}"/></br>
+                      Max tareas: <g:textField name="nuevoMaximoTareas" value="${columna.maximoTareas}"/>
+                      <input type="submit" name="cambiar" /> 
                    </g:form>
                  </div>
              <h2 style="margin-top:20px; visibility:${visibilidad_titulo}; display:${display_titulo}; clear:none;" 
                  id="titulo_columna_${columna.id}" 
                  onclick="permuta('editor_titulo_columna_${columna.id}','titulo_columna_${columna.id}')">
+                   <g:if test="${columna.maximoTareas>0}">
+                   		(${columna.maximoTareas})</br>
+                   </g:if>
                    ${columna.titulo}
              </h2>
              </div>
              
              <!-- lista de tareas -->
              <g:set value="${listaTodasLasTareas}" var="listaTareasColumna"/>
-             <g:each in="${listaTareasColumna[j]}" var="tareaInstance">
+             <g:each in="${listaTareasColumna[j]}" status="numTarea" var="tareaInstance">
              
                    <!-- la tarea -->
-                   <div class="postit">
+                   <% if ((numTarea>=columna.maximoTareas)&&(columna.maximoTareas>0)) {
+                	   estilo = 'style="background:#ffcccc;"' 
+                   } else {
+                	   estilo = ''
+                   } %>
+                   <div class="postit" ${estilo} }>
                    <div>
                       
                       <!-- boton de borrar si esta en la primera columna -->
